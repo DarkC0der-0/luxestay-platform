@@ -60,8 +60,21 @@ app.use('/api/v1/support', supportRoutes);
 const adminRoutes = require('./server/routes/admin');
 app.use('/api/v1/admin', adminRoutes);
 
+// Serve static files from the React dist folder (Single Instance Deployment)
+const path = require('path');
+app.use(express.static(path.join(__dirname, 'dist')));
+
+app.get('*', (req, res, next) => {
+  // Bypass static serving for API endpoints to allow correct JSON error responses
+  if (req.path.startsWith('/api/')) {
+    return next();
+  }
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+});
+
 // Global Error Handler
 app.use(errorHandler);
+
 
 const initializeSocket = require('./server/socket/index.js');
 

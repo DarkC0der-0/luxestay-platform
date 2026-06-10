@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "db:init": "node scripts/init_db.js",
     "test": "jest --coverage --detectOpenHandles",
-    "start": "npm-run-all --parallel server client",
+    "start": "node app.js",
     "prepare": "npm-run-all --parallel server client",
     "line": "npm-run-all --parallel server client"
   },
