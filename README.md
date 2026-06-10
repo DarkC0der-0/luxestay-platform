@@ -131,16 +131,18 @@ The platform is optimized for deployment on **Railway**. It handles the Node.js 
 3.  Click **New Project** > **Deploy from GitHub repo**.
 4.  Connect your repository.
 
-### 2. Add PostgreSQL Database
-1.  Inside your Railway project, click **New** > **Database** > **Add PostgreSQL**.
-2.  Railway automatically provides the `DATABASE_URL` to your app if they are in the same project.
+### 2. Database Configuration (Supabase)
+The platform uses **Supabase** for its production PostgreSQL database.
+1.  Go to your [Supabase Dashboard](https://supabase.com/).
+2.  Navigate to **Project Settings** > **Database**.
+3.  Copy the **Connection string** (URI).
 
 ### 3. Environment Variables
-In the Railway service settings, ensure the following variables are set:
-*   `DATABASE_URL`: (Automatically linked from the Postgres service)
+In the Railway service settings, add the following variables:
+*   `DATABASE_URL`: Your Supabase connection string (ensure you use the one for `pg` pooler if available).
 *   `JWT_SECRET`: A secure random string.
 *   `NODE_ENV`: `production`
-*   `PORT`: `5005` (Railway will detect this, but it's good to be explicit).
+*   `PORT`: `5005`
 *   `FRONTEND_URL`: Your Railway app URL (e.g., `https://your-app.up.railway.app`).
 
 ---
