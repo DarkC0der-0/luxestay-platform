@@ -1,5 +1,6 @@
 // server/config/db.js
 const { Pool } = require('pg');
+const dns = require('dns');
 require('dotenv').config();
 
 const pool = new Pool({
@@ -7,6 +8,9 @@ const pool = new Pool({
   ssl: {
     rejectUnauthorized: false, // Required for Supabase in many environments
   },
+  lookup: (hostname, options, callback) => {
+    dns.lookup(hostname, { ...options, family: 4 }, callback);
+  }
 });
 
 pool.on('connect', () => {
