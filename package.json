@@ -11,8 +11,8 @@
     "db:init": "node scripts/init_db.js",
     "test": "jest --coverage --detectOpenHandles",
     "start": "node app.js",
-    "prepare": "npm-run-all --parallel server client",
-    "line": "npm-run-all --parallel server client"
+    "dev:all": "npm-run-all --parallel server client",
+    "start:all": "npm-run-all --parallel server client"
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.3.0",
