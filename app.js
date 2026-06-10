@@ -1,4 +1,9 @@
 // server/app.js
+const dns = require('dns');
+if (dns.setDefaultResultOrder) {
+  dns.setDefaultResultOrder('ipv4first');
+}
+
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -16,6 +21,8 @@ const server = http.createServer(app);
 
 const ALLOWED_ORIGINS = [
   process.env.FRONTEND_URL,
+  'http://localhost:3000',
+  'http://127.0.0.1:3000',
   'http://localhost:5173',
   'http://localhost:5174',
   'http://127.0.0.1:5173',
