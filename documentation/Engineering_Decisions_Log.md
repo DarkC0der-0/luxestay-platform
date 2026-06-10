@@ -89,6 +89,6 @@ This document serves as a senior-level changelog and decision log detailing the 
 *   **Why we chose this:** Built Vite outputs to static HTML/JS and hosted them via a lightweight Nginx container with custom fallbacks (`try_files $uri $uri/ /index.html`).
 *   **Why we didn't choose Express static hosting:** Serving static UI code from Node Express blocks the single-threaded event loop, degrading API response performance.
 
-### Decision 6.2: Dynamic CORS Origin Resolving for Railway & Render Deployments
-*   **Why we chose this:** Backend Express CORS automatically trusts any incoming origin ending with `.railway.app` or `.onrender.com`.
-*   **Why we didn't choose manual FRONTEND_URL environment bindings:** In platform-specific preview deployments, referencing static site host URLs is often dynamic. Trusting platform subdomains ensures seamless cross-origin communication between the frontend and backend without hardcoding URLs.
+### Decision 6.2: Strict CORS Origin Policy for Local Development
+*   **Why we chose this:** Backend Express CORS is strictly limited to explicitly allowed local origins defined in environment variables.
+*   **Why we didn't choose wildcarding:** Wildcarding or dynamic resolution introduces security risks in local environments. By enforcing strict origin checks, we ensure that only authorized local frontend instances can communicate with the API.

@@ -14,7 +14,7 @@ A highly robust, secure, and full-featured platform that allows users to browse,
 *   💬 **Persistent Real-Time Messaging:** Messaging chat history utilizing a fully JWT-authenticated Socket.IO server.
 *   🛠 **Administrative Controls:** Full administrative panel mapping platform volumes, host payouts ledger approvals, support ticketing activity/resolutions, settings overrides, and user suspension controls.
 *   🐳 **Containerized Architecture:** Complete Docker Compose setup running PostgreSQL, Node Express server, and Vite client Nginx server out-of-the-box.
-*   ☁️ **Railway Cloud Infrastructure:** Seamless full-stack deployment mapping automated continuous deployment hooks for the API, Socket.IO, and PostgreSQL.
+*   ☁️ **Dockerized Architecture:** Seamless full-stack orchestration using Docker Compose for the API, Socket.IO, and PostgreSQL.
 
 ---
 
@@ -118,32 +118,6 @@ npm run server
 ```bash
 npm run dev
 ```
-
----
-
-## 🚂 Railway Deployment (Full Stack)
-
-The platform is optimized for deployment on **Railway**. It handles the Node.js server, Socket.io, and PostgreSQL database seamlessly.
-
-### 1. Deploy the App
-1.  Push your code to a GitHub repository.
-2.  Go to the [Railway Dashboard](https://railway.app/).
-3.  Click **New Project** > **Deploy from GitHub repo**.
-4.  Connect your repository.
-
-### 2. Database Configuration (Supabase)
-The platform uses **Supabase** for its production PostgreSQL database.
-1.  Go to your [Supabase Dashboard](https://supabase.com/).
-2.  Navigate to **Project Settings** > **Database**.
-3.  Copy the **Connection string** (URI).
-
-### 3. Environment Variables
-In the Railway service settings, add the following variables:
-*   `DATABASE_URL`: Your Supabase connection string (ensure you use the one for `pg` pooler if available).
-*   `JWT_SECRET`: A secure random string.
-*   `NODE_ENV`: `production`
-*   `PORT`: `5005`
-*   `FRONTEND_URL`: Your Railway app URL (e.g., `https://your-app.up.railway.app`).
 
 ---
 
