@@ -1,0 +1,157 @@
+@import "tailwindcss";
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-slate-50 text-slate-800 antialiased selection:bg-indigo-200 selection:text-indigo-900;
+    margin: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  }
+  button {
+    border-width: 0;
+    border-style: solid;
+  }
+}
+
+/* Glassmorphism utilities */
+@utility glass {
+  @apply bg-white/80 backdrop-blur-md border border-white/20 shadow-lg;
+}
+
+@utility glass-dark {
+  @apply bg-slate-900/80 backdrop-blur-md border border-slate-700/50 shadow-lg;
+}
+
+/* Animations */
+@keyframes shimmer {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(100%); }
+}
+
+@utility premium-button {
+  @apply relative overflow-hidden transition-all duration-300 active:scale-[0.98];
+}
+
+@utility premium-button-shimmer {
+  @apply absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-[shimmer_2s_infinite];
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+@utility animate-shake {
+  animation: shake 0.2s ease-in-out 0s 2;
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.9) translateY(20px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@utility animate-modal-in {
+  animation: modalIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes ken-burns {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.1); }
+}
+
+/* Staggered entrance animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  opacity: 0;
+  animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.delay-100 {
+  animation-delay: 100ms;
+}
+
+.delay-200 {
+  animation-delay: 220ms;
+}
+
+.delay-300 {
+  animation-delay: 340ms;
+}
+
+.delay-400 {
+  animation-delay: 460ms;
+}
+
+.delay-500 {
+  animation-delay: 580ms;
+}
+
+.text-stroke-sm {
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
+}
+
+/* Custom premium scrollbar */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Soft ambient glows */
+@utility glow-indigo {
+  box-shadow: 0 0 40px -5px rgba(99, 102, 241, 0.15);
+}
+@utility glow-emerald {
+  box-shadow: 0 0 40px -5px rgba(16, 185, 129, 0.15);
+}
+@utility glow-violet {
+  box-shadow: 0 0 40px -5px rgba(139, 92, 246, 0.15);
+}
+@utility glow-amber {
+  box-shadow: 0 0 40px -5px rgba(245, 158, 11, 0.15);
+}
+
+/* Slide in animation */
+@keyframes slideInRight {
+  from { transform: translateX(30px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.animate-slide-in {
+  animation: slideInRight 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Fade in (opacity only, no translate) */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+/* Scale + fade for modals */
+@keyframes scaleUp {
+  from { opacity: 0; transform: scale(0.92) translateY(16px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0); }
+}
+
+.animate-scale-up {
+  animation: scaleUp 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}

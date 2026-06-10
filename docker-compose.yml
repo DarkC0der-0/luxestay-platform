@@ -1,0 +1,57 @@
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: luxestay_db
+    restart: always
+    environment:
+      POSTGRES_DB: assess
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./server/db/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d assess"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+    container_name: luxestay_server
+    restart: always
+    ports:
+      - "5005:5005"
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/assess
+      PORT: 5005
+      JWT_SECRET: 9UlINQlQntmNbG1NOsAJMm3YOPtQJHEmmYI0Ol0/cCw=
+      NODE_ENV: development
+      FRONTEND_URL: http://localhost:3000
+    depends_on:
+      db:
+        condition: service_healthy
+    # Optional volume mapping for local server code hot-reloading (uncomment if needed)
+    # volumes:
+    #   - .:/usr/src/app
+    #   - /usr/src/app/node_modules
+
+  client:
+    build:
+      context: .
+      dockerfile: Dockerfile.client
+      args:
+        - VITE_API_URL=http://localhost:5005/api/v1
+    container_name: luxestay_client
+    restart: always
+    ports:
+      - "3000:80"
+    depends_on:
+      - server
+
+volumes:
+  pgdata:
