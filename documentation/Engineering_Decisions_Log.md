@@ -89,6 +89,6 @@ This document serves as a senior-level changelog and decision log detailing the 
 *   **Why we chose this:** Built Vite outputs to static HTML/JS and hosted them via a lightweight Nginx container with custom fallbacks (`try_files $uri $uri/ /index.html`).
 *   **Why we didn't choose Express static hosting:** Serving static UI code from Node Express blocks the single-threaded event loop, degrading API response performance.
 
-### Decision 6.2: Dynamic CORS Origin Resolving for Render Deployments
-*   **Why we chose this:** Backend Express CORS automatically trusts any incoming origin ending with `.onrender.com`.
-*   **Why we didn't choose manual FRONTEND_URL environment bindings:** In Render blueprint configurations, referencing static site host URLs (`fromService: type: static, property: host`) is forbidden because static sites do not compile hostnames on the private network. Trusting `.onrender.com` subdomains dynamically resolved this loop natively.
+### Decision 6.2: Dynamic CORS Origin Resolving for Railway & Render Deployments
+*   **Why we chose this:** Backend Express CORS automatically trusts any incoming origin ending with `.railway.app` or `.onrender.com`.
+*   **Why we didn't choose manual FRONTEND_URL environment bindings:** In platform-specific preview deployments, referencing static site host URLs is often dynamic. Trusting platform subdomains ensures seamless cross-origin communication between the frontend and backend without hardcoding URLs.

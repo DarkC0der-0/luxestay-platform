@@ -27,7 +27,7 @@ const corsOptions = {
       // Allow requests with no origin (like mobile apps or curl)
       if (!origin) return callback(null, true);
       
-      if (ALLOWED_ORIGINS.indexOf(origin) !== -1 || origin.endsWith('.onrender.com')) {
+      if (ALLOWED_ORIGINS.indexOf(origin) !== -1 || origin.endsWith('.onrender.com') || origin.endsWith('.railway.app')) {
         callback(null, true);
       } else {
         console.error(`[CORS Error] Origin ${origin} not allowed by policy`);

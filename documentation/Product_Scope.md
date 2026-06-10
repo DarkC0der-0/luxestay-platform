@@ -63,7 +63,7 @@ The LuxeStay platform contains the following modules:
 *   **Support Tickets:** Complete ticketing workflow for guest inquiries and administrative resolutions.
 *   **Host Dashboard:** Specialized UI tracking bookings, reservations, and listing properties.
 *   **Administrative Portal:** Full control panel mapping platform stats, user suspension controls, settings overrides, payout approvals, refund triggers, and ticket activity notes.
-*   **Containerization & Deployment:** Local container environment definitions (Docker / Docker Compose) and cloud deployment blueprint code (Render).
+*   **Containerization & Deployment:** Local container environment definitions (Docker / Docker Compose) and cloud deployment configuration (Railway).
 
 ---
 
@@ -87,7 +87,7 @@ The codebase has been fully refactored, resolving all modular gaps between the f
 | **Data Integration** | Frontend used static mock data (`villas.js`). | Frontend fetches dynamically from Express API using React Query & Axios. | **100% Completed** |
 | **Security Risks** | Suspicious remote code execution logic in controllers. | Strictly secure local controller logic. Vulnerability vectors eliminated. | **100% Completed** |
 | **Dependencies** | Legacy Web3 and unused SQLite dependencies. | Clean dependency graph (PostgreSQL client, Express, Zustand, React Query). | **100% Completed** |
-| **Deployment & IaC** | Manual server setups. | Containerized (Docker Compose) and cloud orchestrated (Render Blueprints). | **100% Completed** |
+| **Deployment & IaC** | Manual server setups. | Containerized (Docker Compose) and cloud orchestrated (Railway / Render). | **100% Completed** |
 
 ---
 

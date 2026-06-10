@@ -5,7 +5,7 @@
 For this application, we have implemented a **Co-located Feature-Driven Monolith** architecture. 
 *   **Backend:** Express.js API layer structured with MVC pattern and direct encapsulation in Model layers.
 *   **Frontend:** React client built with Vite and structured using a scalable **Feature-Based Modular Architecture** (decoupling domain code into feature folders).
-*   **Containerization & Cloud Infrastructure:** Local environment containerization via Docker/Docker Compose and cloud service automation via Render Blueprint configurations (IaC).
+*   **Containerization & Cloud Infrastructure:** Local environment containerization via Docker/Docker Compose and cloud service automation via Railway for full-stack hosting.
 
 This architecture ensures high execution speed, straightforward local execution, and structural decoupling without the premature infrastructure overhead of microservices.
 
@@ -22,7 +22,7 @@ This architecture ensures high execution speed, straightforward local execution,
 *   **Authentication:** JWT (Stateless) – signature-verified authorization headers.
 *   **Real-time:** Socket.io – WebSocket integration for guest-host chat messaging.
 *   **Containerization:** Docker & Docker Compose – standardized container runtimes.
-*   **Hosting Orchestration:** Render Infrastructure as Code (Blueprint `render.yaml`).
+*   **Hosting Orchestration:** Railway (Full Stack) or Render.
 
 ---
 
@@ -88,8 +88,8 @@ The backend decouples HTTP controller logic from database operations:
 *   **Rationale:** Local Docker containers do not run SSL. The connection pools dynamically disable SSL if connecting to `localhost`, `127.0.0.1`, `db:5432` container links, or if `DB_SSL=false` is set, preserving mandatory SSL checks for cloud servers (Supabase/Production).
 
 ### ADR 4: Cross-Origin Resource Sharing (CORS) Wildcarding for Deployments
-*   **Decision:** Dynamically resolve CORS origins ending in `.onrender.com`.
-*   **Rationale:** Prevents CORS blocking between the frontend static site and backend web service on Render preview subdomains without having to hardcode deployment subdomains.
+*   **Decision:** Dynamically resolve CORS origins ending in `.railway.app` or `.onrender.com`.
+*   **Rationale:** Prevents CORS blocking between the frontend static site and backend web service on platform-specific preview subdomains without having to hardcode deployment URLs.
 
 ---
 
@@ -152,6 +152,5 @@ Double-bookings are rejected at the data layer using PostgreSQL exclusion rules:
 ├── Dockerfile.server           # Docker configuration for Express API server
 ├── Dockerfile.client           # Docker configuration for Vite client Nginx server
 ├── nginx.conf                  # Nginx proxy mapping client assets and fallback routes
-├── docker-compose.yml          # Container composer for local environment runs
-└── render.yaml                 # Render Infrastructure as Code Blueprint config
+└── docker-compose.yml          # Container composer for local environment runs
 ```

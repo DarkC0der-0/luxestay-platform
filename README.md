@@ -14,7 +14,7 @@ A highly robust, secure, and full-featured platform that allows users to browse,
 *   💬 **Persistent Real-Time Messaging:** Messaging chat history utilizing a fully JWT-authenticated Socket.IO server.
 *   🛠 **Administrative Controls:** Full administrative panel mapping platform volumes, host payouts ledger approvals, support ticketing activity/resolutions, settings overrides, and user suspension controls.
 *   🐳 **Containerized Architecture:** Complete Docker Compose setup running PostgreSQL, Node Express server, and Vite client Nginx server out-of-the-box.
-*   ☁️ **Render Cloud Infrastructure:** Infrastructure as Code (IaC) configuration mapping automated continuous deployment hooks for all components.
+*   ☁️ **Railway Cloud Infrastructure:** Seamless full-stack deployment mapping automated continuous deployment hooks for the API, Socket.IO, and PostgreSQL.
 
 ---
 
@@ -121,20 +121,27 @@ npm run dev
 
 ---
 
-## ☁️ Render Cloud Deployment
+## 🚂 Railway Deployment (Full Stack)
 
-We provide a blueprint configuration file for automating continuous deployments on Render:
+The platform is optimized for deployment on **Railway**. It handles the Node.js server, Socket.io, and PostgreSQL database seamlessly.
 
-1.  Commit and push all files to your GitHub repository.
-2.  Go to the [Render Dashboard](https://dashboard.render.com).
-3.  Click **New +** and select **Blueprint**.
-4.  Connect your GitHub repository.
-5.  Render will parse the [render.yaml](./render.yaml) file and automatically provision:
-    *   Managed Postgres Database (`luxestay-db`)
-    *   Backend Node.js API Web Service (`luxestay-backend`)
-    *   Frontend Static Site served over CDN (`luxestay-frontend`)
+### 1. Deploy the App
+1.  Push your code to a GitHub repository.
+2.  Go to the [Railway Dashboard](https://railway.app/).
+3.  Click **New Project** > **Deploy from GitHub repo**.
+4.  Connect your repository.
 
-*Note: Cross-service environment configurations, port listings, and SPA URL overrides are handled automatically by Render.*
+### 2. Add PostgreSQL Database
+1.  Inside your Railway project, click **New** > **Database** > **Add PostgreSQL**.
+2.  Railway automatically provides the `DATABASE_URL` to your app if they are in the same project.
+
+### 3. Environment Variables
+In the Railway service settings, ensure the following variables are set:
+*   `DATABASE_URL`: (Automatically linked from the Postgres service)
+*   `JWT_SECRET`: A secure random string.
+*   `NODE_ENV`: `production`
+*   `PORT`: `5005` (Railway will detect this, but it's good to be explicit).
+*   `FRONTEND_URL`: Your Railway app URL (e.g., `https://your-app.up.railway.app`).
 
 ---
 
