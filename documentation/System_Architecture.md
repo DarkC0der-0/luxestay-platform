@@ -31,7 +31,7 @@ This architecture ensures high execution speed, straightforward local execution,
 
 ```mermaid
 graph TD
-    Client[React Client (Vite/Nginx)] -->|HTTP REST / WebSockets| API[Express API Gateway]
+    Client["React Client (Vite/Nginx)"] -->|HTTP REST / WebSockets| API[Express API Gateway]
     API --> Auth[Auth Controller]
     API --> Property[Property Controller]
     API --> Booking[Booking Controller]
