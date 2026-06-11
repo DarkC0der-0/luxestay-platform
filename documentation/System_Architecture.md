@@ -132,3 +132,47 @@ The application is deployed using a single-instance container infrastructure:
 *   **Database Gateway:** Routed via Supabase Connection Pooler (`aws-0-[region].pooler.supabase.com:5432`) to bypass IPv6 container network restrictions.
 *   **Railway configuration:** Controlled via root `railway.json` to force Dockerfile builders.
 *   **Helmet & CSP configuration:** Disables CSP to allow Unsplash image caching and WebSocket handshakes from the browser client.
+
+---
+
+## 7. Codebase Directory Structure (Technical Layout)
+
+```text
+├── src/                        # React Frontend (Feature-based Modular Architecture)
+│   ├── app/                    # Application configuration, layouts, and routing
+│   │   ├── layouts/            # Global page layout shells (Admin, Auth, Main, Host)
+│   │   ├── providers/          # Global context providers (React Query)
+│   │   └── router/             # Page router configuration
+│   ├── features/               # Domain-specific feature modules
+│   │   ├── auth/               # User registration, login, state store, and authentication api
+│   │   ├── admin/              # Admin-specific components, pages (dashboard, users, properties, support)
+│   │   ├── hosting/            # Host dashboard, reservation management, properties list
+│   │   ├── trips/              # Guest trip history, tickets, cancellations
+│   │   ├── properties/         # Property listings, details page, reviews, filters
+│   │   ├── messages/           # Chat list and thread messages
+│   │   └── ...                 # Other features (home, contact, about, bookings)
+│   ├── shared/                 # Reusable layout and utility definitions
+│   │   ├── components/         # Shared visual widgets (Navbar, Footer, Modal, Button, etc.)
+│   │   ├── hooks/              # Shared logic hooks (scroll reveals)
+│   │   ├── lib/                # Shared API clients (axios, socket, queryClient)
+│   │   └── utils/              # Reusable data/date formatters
+│   ├── styles/                 # Global styling config (Tailwind v4)
+│   ├── App.jsx                 # App entry coordinator
+│   └── main.jsx                # Web root mount point
+│
+├── server/                     # Express Backend Monolith Domain
+│   ├── controllers/            # HTTP handlers validating payload and triggering models
+│   ├── db/                     # DB schemas and migrations (schema.sql)
+│   ├── middleware/             # Route guards, error handling, session verifiers
+│   ├── models/                 # Direct database query layers (PostgreSQL client)
+│   └── routes/                 # Express Router endpoint definitions
+│
+├── scripts/                    # Database seeding and migration helper scripts
+├── app.js                      # Backend API server configuration and mount point
+├── package.json                # Shared backend/frontend dependency config
+├── Dockerfile.server           # Docker configuration for Express API server
+├── Dockerfile.client           # Docker configuration for Vite client Nginx server
+├── railway.json                # Railway build and deploy configuration
+├── nginx.conf                  # Nginx proxy mapping client assets and fallback routes
+└── docker-compose.yml          # Container composer for local environment runs
+```
