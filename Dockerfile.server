@@ -1,15 +1,18 @@
 # Dockerfile.server
-FROM node:20-alpine
+FROM node:20-slim
 
 # Set working directory
 WORKDIR /usr/src/app
 
-# Install app dependencies
+# Install app dependencies (force development install to get Vite/Tailwind for build step)
 COPY package*.json ./
-RUN npm install --include=optional
+RUN NODE_ENV=development npm install --include=optional
 
 # Copy app source code
 COPY . .
+
+# Build the frontend assets for single-instance hosting compatibility
+RUN npm run build
 
 # Expose port
 EXPOSE 5005

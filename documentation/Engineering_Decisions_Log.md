@@ -57,6 +57,10 @@ This document serves as a senior-level changelog and decision log detailing the 
     PostgreSQL throws error `23P01` instantly if dates intersect.
 *   **Why we didn't choose app-level checking:** Application checks are prone to race conditions (two requests reading availability simultaneously, both finding the dates free, and both executing inserts, resulting in a double-booking).
 
+### Decision 3.3: Supabase IPv4 Connection Pooler (Supavisor) Integration
+*   **Context:** Supabase direct database connection URLs are IPv6-only by default. Because virtualized container engines (like Docker Desktop on macOS/Windows) do not route IPv6 packets to the internet by default, trying to connect directly from a container causes `connect ENETUNREACH`.
+*   **Decision:** We transitioned from direct database connections to Supabase's IPv4 Connection Pooler (typically port `5432` or `6543` at `aws-0-[region].pooler.supabase.com`). Additionally, any special characters in the database password (such as `@` and `%`) are strictly URL-encoded (e.g. `@` -> `%40`, `%` -> `%25`) to prevent PostgreSQL connection string parsing errors.
+
 ---
 
 ## 4. State Management & API Client Orchestration
@@ -85,10 +89,18 @@ This document serves as a senior-level changelog and decision log detailing the 
 
 ## 6. Containerization & Deployment Configurations
 
-### Decision 6.1: Nginx-Served Frontend static files over Node-Served Client
-*   **Why we chose this:** Built Vite outputs to static HTML/JS and hosted them via a lightweight Nginx container with custom fallbacks (`try_files $uri $uri/ /index.html`).
-*   **Why we didn't choose Express static hosting:** Serving static UI code from Node Express blocks the single-threaded event loop, degrading API response performance.
+### Decision 6.1: Hybrid Serving Strategy (Nginx Local vs Single-Instance Cloud)
+*   **Why we chose this:** We support a dual-container architecture locally using Docker Compose (Vite compiled code served via Nginx on port 3000, and Express API served on port 5005). However, for simple cloud deployments (such as Railway or Render), we build a unified Single-Instance container (`Dockerfile.server` built with `node:20-slim`) that runs `npm run build` at build-time and serves the client static assets through Node via `express.static`.
+*   **Why we didn't choose pure isolated containers in production:** Managing and paying for two separate cloud services (an Nginx container and a Node container) increases deployment complexity, increases network latency between client and server, and doubles hosting costs.
 
-### Decision 6.2: Strict CORS Origin Policy for Local Development
-*   **Why we chose this:** Backend Express CORS is strictly limited to explicitly allowed local origins defined in environment variables.
-*   **Why we didn't choose wildcarding:** Wildcarding or dynamic resolution introduces security risks in local environments. By enforcing strict origin checks, we ensure that only authorized local frontend instances can communicate with the API.
+### Decision 6.2: Dynamic CORS Whitelisting
+*   **Why we chose this:** The backend's CORS options whitelist local environment origins (`localhost:3000`, `localhost:5173`, etc.) but also dynamically matches any origin ending in `.railway.app` or containing `up.railway.app`.
+*   **Why we didn't choose static whitelisting:** Static environments prevent easy staging/preview deploys where Railway generates a dynamic subdomain. Allowing Railway subdomains dynamically ensures preview URLs load backend assets seamlessly.
+
+### Decision 6.3: Disable Strict Content Security Policy (CSP) in Helmet
+*   **Why we chose this:** We disabled Helmet's strict default Content Security Policy (setting `contentSecurityPolicy: false`).
+*   **Rationale:** The platform loads high-resolution placeholder images from a public CDN (Unsplash) and initiates Socket.IO websocket connections. The default Helmet CSP blocks cross-origin assets and script connections, resulting in blank screens and image loading blocks in production.
+
+### Decision 6.4: Explicit Railway Deployment Configuration (`railway.json`)
+*   **Why we chose this:** Created a root `railway.json` file pointing to `Dockerfile.server` and enforcing the `DOCKERFILE` builder.
+*   **Rationale:** Without explicit instruction, Railway falls back to its default Nixpacks builder, which ignores our custom multi-stage Docker build pipeline, skips devDependencies required to compile Vite, and results in a blank page deployment due to a missing `dist` directory.

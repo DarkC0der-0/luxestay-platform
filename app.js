@@ -34,13 +34,14 @@ const corsOptions = {
       // Allow requests with no origin (like mobile apps or curl)
       if (!origin) return callback(null, true);
       
-      if (ALLOWED_ORIGINS.indexOf(origin) !== -1) {
+      // Dynamically allow any Railway domain or whitelisted origins
+      const isRailway = origin.endsWith('.railway.app') || origin.includes('up.railway.app');
+      if (ALLOWED_ORIGINS.indexOf(origin) !== -1 || isRailway) {
         callback(null, true);
       } else {
         console.error(`[CORS Error] Origin ${origin} not allowed by policy`);
         callback(new Error('Not allowed by CORS'));
       }
-
     },
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
@@ -48,7 +49,9 @@ const corsOptions = {
 };
 
 // Middleware
-app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: false,
+}));
 app.use(express.json());
 app.use(cors(corsOptions));
 

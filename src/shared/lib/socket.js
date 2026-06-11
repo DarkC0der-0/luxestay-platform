@@ -8,7 +8,11 @@ export const initializeSocket = () => {
   if (!token) return null;
 
   if (!socket) {
-    const url = import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace('/api/v1', '') : 'http://localhost:5005';
+    const url = import.meta.env.VITE_API_URL 
+      ? import.meta.env.VITE_API_URL.replace('/api/v1', '') 
+      : (typeof window !== 'undefined' && (window.location.port === '5173' || window.location.port === '5174') 
+          ? 'http://localhost:5005' 
+          : (typeof window !== 'undefined' ? window.location.origin : ''));
     socket = io(url, {
       auth: { token },
       transports: ['websocket'],
